@@ -103,7 +103,7 @@
 
         #hacker-screen { 
             position: fixed; inset: 0; background: #000; z-index: 20000; display: block; 
-            transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.5s ease-in;
+            transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.5s ease-in, filter 0.5s ease;
         }
         #matrix-bg { position: absolute; top: 0; left: 0; opacity: 0.35; width: 100%; height: 100%; }
         #term-box { position: relative; z-index: 20001; padding: 30px; font-family: monospace; color: var(--hacker-green); }
@@ -192,7 +192,7 @@
             border-radius: 25px; 
             font-weight: 800; 
             font-size: 0.8rem;
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6) !important; 
             white-space: nowrap; 
             display: flex;
             flex-direction: column;
@@ -213,6 +213,7 @@
             color: white; 
             box-shadow: var(--glow-red); 
             transform: translateY(-2px) scale(1.05);
+            animation: pulseGlow 2s infinite alternate;
         }
         .tab-btn.active i {
             transform: scale(1.1);
@@ -221,21 +222,61 @@
             background: var(--hacker-green); 
             color: #000; 
             box-shadow: var(--glow-green); 
+            animation: pulseGlowGreen 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255, 77, 109, 0.4); }
+            100% { box-shadow: 0 0 25px rgba(255, 77, 109, 0.9), 0 0 10px #fff; }
+        }
+
+        @keyframes pulseGlowGreen {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 136, 0.4); }
+            100% { box-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 10px #fff; }
         }
         
-        /* تصميم الكروت الزجاجية (Glassmorphic Cards) */
+        /* تصميم الكروت الزجاجية (Glassmorphic Cards) مع تأثير النيون المتحرك */
         .card { 
-            background: var(--glass-bg); 
-            border: 1px solid var(--glass-border); 
+            position: relative;
+            background: rgba(12, 17, 29, 0.65) !important; 
+            border: 1px solid rgba(255, 255, 255, 0.12) !important; 
             border-radius: 28px; 
             padding: 22px; 
             margin-bottom: 20px; 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px) saturate(180%) !important; 
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             opacity: 0; 
             transform: translateY(20px); 
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, var(--hacker-green), transparent 30%, var(--nurse-red), transparent 70%);
+            animation: rotateBorder 6s linear infinite;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            background: rgba(10, 14, 26, 0.88);
+            border-radius: 27px;
+            z-index: -1;
+        }
+
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .card.revealed {
@@ -248,13 +289,21 @@
         
         .section { 
             display: none; 
-            animation: fadeInTab 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInTab 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .section.active { display: block; }
         
         @keyframes fadeInTab {
-            from { opacity: 0; transform: translateY(10px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            0% { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.92) rotateX(-10deg); 
+                filter: blur(8px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1) rotateX(0deg); 
+                filter: blur(0px);
+            }
         }
 
         #chat-box, #wish-list, #dynamic-tasks-m, #dynamic-tasks-y, #memories-list, #music-list { 
@@ -493,6 +542,39 @@
 </div>
 
 <script>
+    // --- أنيميشن القلوب والنجوم التفاعلية عند اللمس على الشاشة ---
+    document.addEventListener('click', function(e) {
+        if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'SELECT' && e.target.tagName !== 'TEXTAREA') {
+            createParticle(e.clientX, e.clientY);
+        }
+    });
+
+    function createParticle(x, y) {
+        const particle = document.createElement('div');
+        const items = ['❤️', '✨', '💖', '⚡', '🌸'];
+        particle.innerHTML = items[Math.floor(Math.random() * items.length)];
+        particle.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            pointer-events: none;
+            font-size: ${Math.random() * 12 + 16}px;
+            z-index: 99999;
+            transform: translate(-50%, -50%) scale(0.5);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 1;
+            filter: drop-shadow(0 0 8px rgba(0,255,136,0.8));
+        `;
+        document.body.appendChild(particle);
+
+        requestAnimationFrame(() => {
+            particle.style.transform = `translate(-50%, -${Math.random() * 80 + 50}px) scale(${Math.random() * 0.8 + 1})`;
+            particle.style.opacity = '0';
+        });
+
+        setTimeout(() => particle.remove(), 850);
+    }
+
     // --- سكريبت خلفية السماء والنجوم والشهب الكونية التفاعلية ---
     const starCanvas = document.getElementById('starfield-canvas');
     const starCtx = starCanvas.getContext('2d');
@@ -507,7 +589,6 @@
 
     function initStars() {
         stars = [];
-        // زيادة كثافة النجوم (قسمة على 1200 بدلاً من 3000 لزيادة العدد لأكثر من الضعف)
         const count = Math.floor((starCanvas.width * starCanvas.height) / 1200);
         for (let i = 0; i < count; i++) {
             stars.push({
@@ -522,7 +603,6 @@
     }
 
     function addShootingStar() {
-        // زيادة احتمالية ظهور الشهب الكونية المضيئة
         if (Math.random() < 0.03 && shootingStars.length < 5) {
             shootingStars.push({
                 x: Math.random() * starCanvas.width,
@@ -538,7 +618,6 @@
     function drawStarfield() {
         starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
         
-        // رسم النجوم بلمعان متناغم
         stars.forEach(star => {
             star.alpha += star.speed * star.dir;
             if (star.alpha >= 1 || star.alpha <= 0.2) star.dir *= -1;
@@ -549,7 +628,6 @@
             starCtx.fill();
         });
 
-        // رسم الشهب السريعة
         shootingStars.forEach((sStar, index) => {
             sStar.x -= sStar.speed;
             sStar.y += sStar.speed * 0.7;
@@ -663,11 +741,18 @@
     document.getElementById('pass-input-term').addEventListener('input', (e) => {
         let val = e.target.value.trim().replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
         if (val === "1212") {
-            const screen = document.getElementById('hacker-screen'); triggerVibrate([100, 50, 100]);
-            screen.classList.add('hacker-shake');
+            const screen = document.getElementById('hacker-screen'); 
+            triggerVibrate([50, 30, 50, 30, 100]);
             initNotifications();
+            
+            screen.style.filter = "hue-rotate(180deg) invert(1) contrast(2)";
+            
             setTimeout(() => {
-                screen.classList.remove('hacker-shake'); screen.classList.add('hacker-exit');
+                screen.style.transition = "all 0.6s cubic-bezier(0.7, 0, 0.3, 1)";
+                screen.style.transform = "scale(1.2) rotate(2deg)";
+                screen.style.opacity = "0";
+                screen.style.filter = "blur(30px)";
+                
                 setTimeout(() => { 
                     screen.style.display = 'none'; 
                     document.getElementById('main-content').style.display = 'block'; 
@@ -676,7 +761,7 @@
                     syncRole(); loadSavedTheme(); updateDailyQuestion(); startLocationTracking(); 
                     initScrollReveal();
                 }, 400);
-            }, 300);
+            }, 250);
         }
     });
 
@@ -1098,7 +1183,7 @@
     db.ref('last_seen').on('value', snap => {
         const seenData = snap.val();
         document.querySelectorAll('.msg').forEach(m => {
-            const msgTime = m.getAttribute('data-time'), sender = m.getAttribute('data-sender'), otherRole = (sender === 'يوسف') ? 'مريم' : 'يوسف';
+            const msgTime = m.getAttribute('data-time'), sender = m.getAttribute('data-sender'), otherRole = (sender === 'يوسف') ? 'مريم' : 'java';
             if(seenData && seenData[otherRole] && seenData[otherRole] > msgTime) {
                 if(!m.querySelector('.seen-status')) {
                     const s = document.createElement('span'); s.className = 'seen-status';
