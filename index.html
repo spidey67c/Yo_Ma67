@@ -126,16 +126,16 @@
 
         .container { max-width: 480px; margin: auto; display: none; padding: 20px; padding-bottom: 120px; }
         
-        /* الهيدر والعدّاد الرئيسي بتصميم الزجاج الفضائي */
+        /* الهيدر والعدّاد الرئيسي بتصميم الزجاج الفضائي الخفيف */
         #real-timer { 
             text-align: center; 
             margin-bottom: 20px; 
-            background: rgba(10, 15, 30, 0.55);
+            background: rgba(10, 15, 30, 0.7);
             border: 1px solid var(--glass-border);
             border-radius: 25px;
             padding: 18px 10px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
         .days-big { 
@@ -155,7 +155,7 @@
         }
         #distance-info { text-align: center; font-size: 0.85rem; color: #aaa; margin-top: -10px; margin-bottom: 20px; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
         
-        /* شريط التنقل السفلي العائم (Floating Bottom Navigation Capsule) مع السلاسة الممتازة */
+        /* شريط التنقل السفلي العائم مع السلاسة الفائقة */
         .bottom-nav-container {
             position: fixed;
             bottom: 18px;
@@ -169,15 +169,15 @@
 
         .tabs { 
             display: flex; 
-            background: rgba(10, 14, 26, 0.82); 
+            background: rgba(10, 14, 26, 0.88); 
             border-radius: 35px; 
             padding: 6px 8px; 
             gap: 4px; 
             border: 1px solid rgba(255, 255, 255, 0.18); 
             overflow-x: auto; 
             scrollbar-width: none;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             justify-content: space-between;
         }
@@ -192,7 +192,7 @@
             border-radius: 25px; 
             font-weight: 800; 
             font-size: 0.8rem;
-            transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6) !important; 
+            transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6) !important; 
             white-space: nowrap; 
             display: flex;
             flex-direction: column;
@@ -235,21 +235,22 @@
             100% { box-shadow: 0 0 25px rgba(0, 255, 136, 0.9), 0 0 10px #fff; }
         }
         
-        /* تصميم الكروت الزجاجية (Glassmorphic Cards) مع تأثير النيون المتحرك */
+        /* تصميم الكروت الزجاجية المحسنة للأداء */
         .card { 
             position: relative;
-            background: rgba(12, 17, 29, 0.65) !important; 
+            background: rgba(12, 17, 29, 0.82) !important; 
             border: 1px solid rgba(255, 255, 255, 0.12) !important; 
             border-radius: 28px; 
             padding: 22px; 
             margin-bottom: 20px; 
-            backdrop-filter: blur(20px) saturate(180%) !important; 
-            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            backdrop-filter: blur(8px) !important; 
+            -webkit-backdrop-filter: blur(8px) !important;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             opacity: 0; 
             transform: translateY(20px); 
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
             overflow: hidden;
+            will-change: transform, opacity;
         }
 
         .card::before {
@@ -269,7 +270,7 @@
             content: '';
             position: absolute;
             inset: 1px;
-            background: rgba(10, 14, 26, 0.88);
+            background: rgba(10, 14, 26, 0.92);
             border-radius: 27px;
             z-index: -1;
         }
@@ -289,20 +290,18 @@
         
         .section { 
             display: none; 
-            animation: fadeInTab 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInTab 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .section.active { display: block; }
         
         @keyframes fadeInTab {
             0% { 
                 opacity: 0; 
-                transform: translateY(30px) scale(0.92) rotateX(-10deg); 
-                filter: blur(8px);
+                transform: translateY(20px) scale(0.95); 
             }
             100% { 
                 opacity: 1; 
-                transform: translateY(0) scale(1) rotateX(0deg); 
-                filter: blur(0px);
+                transform: translateY(0) scale(1); 
             }
         }
 
@@ -558,24 +557,24 @@
             left: ${x}px;
             top: ${y}px;
             pointer-events: none;
-            font-size: ${Math.random() * 12 + 16}px;
+            font-size: ${Math.random() * 10 + 14}px;
             z-index: 99999;
             transform: translate(-50%, -50%) scale(0.5);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 1;
-            filter: drop-shadow(0 0 8px rgba(0,255,136,0.8));
+            filter: drop-shadow(0 0 6px rgba(0,255,136,0.8));
         `;
         document.body.appendChild(particle);
 
         requestAnimationFrame(() => {
-            particle.style.transform = `translate(-50%, -${Math.random() * 80 + 50}px) scale(${Math.random() * 0.8 + 1})`;
+            particle.style.transform = `translate(-50%, -${Math.random() * 60 + 40}px) scale(${Math.random() * 0.8 + 1})`;
             particle.style.opacity = '0';
         });
 
-        setTimeout(() => particle.remove(), 850);
+        setTimeout(() => particle.remove(), 750);
     }
 
-    // --- سكريبت خلفية السماء والنجوم والشهب الكونية التفاعلية ---
+    // --- سكريبت خلفية السماء والنجوم وخفة الأداء ---
     const starCanvas = document.getElementById('starfield-canvas');
     const starCtx = starCanvas.getContext('2d');
     let stars = [];
@@ -589,12 +588,13 @@
 
     function initStars() {
         stars = [];
-        const count = Math.floor((starCanvas.width * starCanvas.height) / 1200);
+        // تحسين الكثافة لأداء فائق السلاسة
+        const count = Math.floor((starCanvas.width * starCanvas.height) / 2800);
         for (let i = 0; i < count; i++) {
             stars.push({
                 x: Math.random() * starCanvas.width,
                 y: Math.random() * starCanvas.height,
-                size: Math.random() * 1.8 + 0.2,
+                size: Math.random() * 1.5 + 0.2,
                 alpha: Math.random(),
                 speed: Math.random() * 0.02 + 0.005,
                 dir: Math.random() > 0.5 ? 1 : -1
@@ -603,13 +603,13 @@
     }
 
     function addShootingStar() {
-        if (Math.random() < 0.03 && shootingStars.length < 5) {
+        if (Math.random() < 0.025 && shootingStars.length < 3) {
             shootingStars.push({
                 x: Math.random() * starCanvas.width,
                 y: Math.random() * (starCanvas.height / 2),
-                len: Math.random() * 90 + 50,
-                speed: Math.random() * 12 + 7,
-                size: Math.random() * 1.8 + 0.6,
+                len: Math.random() * 80 + 40,
+                speed: Math.random() * 10 + 6,
+                size: Math.random() * 1.5 + 0.5,
                 alpha: 1
             });
         }
@@ -631,7 +631,7 @@
         shootingStars.forEach((sStar, index) => {
             sStar.x -= sStar.speed;
             sStar.y += sStar.speed * 0.7;
-            sStar.alpha -= 0.015;
+            sStar.alpha -= 0.02;
 
             if (sStar.alpha <= 0) {
                 shootingStars.splice(index, 1);
@@ -736,7 +736,9 @@
         ctx.fillStyle = '#0f8'; ctx.font = '15px monospace';
         drops.forEach((y, i) => { ctx.fillText(Math.floor(Math.random()*10), i*15, y*15); if(y*15 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; });
     }
-    setInterval(drawMatrix, 40);
+    
+    // حفظ اسم الأنيميشن لإيقافه وإراحة الموبايل فوراً
+    let matrixInterval = setInterval(drawMatrix, 40);
 
     document.getElementById('pass-input-term').addEventListener('input', (e) => {
         let val = e.target.value.trim().replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
@@ -745,13 +747,16 @@
             triggerVibrate([50, 30, 50, 30, 100]);
             initNotifications();
             
+            // إيقاف رسم Matrix لتسريع الموبايل 10x
+            clearInterval(matrixInterval);
+            
             screen.style.filter = "hue-rotate(180deg) invert(1) contrast(2)";
             
             setTimeout(() => {
-                screen.style.transition = "all 0.6s cubic-bezier(0.7, 0, 0.3, 1)";
-                screen.style.transform = "scale(1.2) rotate(2deg)";
+                screen.style.transition = "all 0.5s cubic-bezier(0.7, 0, 0.3, 1)";
+                screen.style.transform = "scale(1.15) rotate(2deg)";
                 screen.style.opacity = "0";
-                screen.style.filter = "blur(30px)";
+                screen.style.filter = "blur(20px)";
                 
                 setTimeout(() => { 
                     screen.style.display = 'none'; 
@@ -760,8 +765,8 @@
                     if(savedRole) document.getElementById('user-role').value = savedRole;
                     syncRole(); loadSavedTheme(); updateDailyQuestion(); startLocationTracking(); 
                     initScrollReveal();
-                }, 400);
-            }, 250);
+                }, 350);
+            }, 200);
         }
     });
 
@@ -1183,7 +1188,7 @@
     db.ref('last_seen').on('value', snap => {
         const seenData = snap.val();
         document.querySelectorAll('.msg').forEach(m => {
-            const msgTime = m.getAttribute('data-time'), sender = m.getAttribute('data-sender'), otherRole = (sender === 'يوسف') ? 'مريم' : 'java';
+            const msgTime = m.getAttribute('data-time'), sender = m.getAttribute('data-sender'), otherRole = (sender === 'يوسف') ? 'مريم' : 'يوسف';
             if(seenData && seenData[otherRole] && seenData[otherRole] > msgTime) {
                 if(!m.querySelector('.seen-status')) {
                     const s = document.createElement('span'); s.className = 'seen-status';
